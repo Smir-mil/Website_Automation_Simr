@@ -112,38 +112,56 @@ const Home = () => {
     {
       icon: <Mail size={24} />,
       title: "Email Automation",
-      description: "Automate email workflows, responses, and campaign management. Handle thousands of emails without manual intervention.",
+      description: "Automate email workflows, responses, and campaign management.",
       delay: 0.1
     },
     {
       icon: <Database size={24} />,
       title: "Data Processing",
-      description: "Transform, clean, and sync data across platforms automatically. Eliminate manual data entry and errors.",
-      delay: 0.2
+      description: "Transform, clean, and sync data across platforms automatically.",
+      delay: 0.15
     },
     {
       icon: <Calendar size={24} />,
-      title: "Scheduling & Reminders",
-      description: "Automate appointment booking, meeting scheduling, and smart reminder systems that save hours weekly.",
-      delay: 0.3
+      title: "Scheduling",
+      description: "Automate appointment booking and smart reminder systems.",
+      delay: 0.2
     },
     {
       icon: <FileText size={24} />,
       title: "Document Processing",
-      description: "Extract, process, and organize documents automatically. Convert manual paperwork into streamlined digital workflows.",
-      delay: 0.4
+      description: "Extract, process, and organize documents automatically.",
+      delay: 0.25
     },
     {
       icon: <BarChart2 size={24} />,
       title: "Report Generation",
-      description: "Automatically generate and distribute reports. Get insights delivered on schedule without lifting a finger.",
-      delay: 0.5
+      description: "Generate and distribute reports automatically on schedule.",
+      delay: 0.3
     },
     {
       icon: <Users size={24} />,
-      title: "Customer Service Automation",
-      description: "Handle inquiries, tickets, and support requests automatically. Provide 24/7 service without human overhead.",
-      delay: 0.6
+      title: "Customer Service",
+      description: "Handle inquiries and support requests with 24/7 automation.",
+      delay: 0.35
+    },
+    {
+      icon: <Workflow size={24} />,
+      title: "Workflow Integration",
+      description: "Connect apps and services into seamless automated workflows.",
+      delay: 0.4
+    },
+    {
+      icon: <Zap size={24} />,
+      title: "Task Automation",
+      description: "Eliminate repetitive tasks with intelligent automation triggers.",
+      delay: 0.45
+    },
+    {
+      icon: <Settings size={24} />,
+      title: "System Integration",
+      description: "Integrate and automate across all your business systems.",
+      delay: 0.5
     }
   ];
 
