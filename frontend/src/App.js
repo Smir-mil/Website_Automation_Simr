@@ -22,11 +22,40 @@ import {
   ChevronRight,
   PlayCircle,
   Sparkles,
-  MessageCircle
+  MessageCircle,
+  Cpu,
+  LayoutDashboard
 } from 'lucide-react';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
+
+const TypingAnimation = ({ text, className }) => {
+  const [displayedText, setDisplayedText] = useState('');
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true });
+
+  useEffect(() => {
+    if (!isInView) return;
+    
+    if (currentIndex < text.length) {
+      const timeout = setTimeout(() => {
+        setDisplayedText(prev => prev + text[currentIndex]);
+        setCurrentIndex(prev => prev + 1);
+      }, 80);
+      
+      return () => clearTimeout(timeout);
+    }
+  }, [currentIndex, text, isInView]);
+
+  return (
+    <div ref={ref} className={className}>
+      {displayedText}
+      <span className="typing-cursor">|</span>
+    </div>
+  );
+};
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -45,7 +74,7 @@ const Navbar = () => {
       className={`navbar ${scrolled ? 'scrolled' : ''}`}
       initial={{ y: -100 }}
       animate={{ y: 0 }}
-      transition={{ duration: 0.6, ease: 'easeOut' }}
+      transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
       data-testid="navbar"
     >
       <div className="nav-container">
@@ -152,57 +181,63 @@ const Home = () => {
     <div className="home-container" data-testid="home-page">
       {/* Hero Section */}
       <section className="hero-section" data-testid="hero-section">
+        <div className="hero-background-effects">
+          <div className="gradient-orb orb-1"></div>
+          <div className="gradient-orb orb-2"></div>
+          <div className="gradient-orb orb-3"></div>
+        </div>
+
         <div className="hero-content-wrapper">
           <motion.div 
             className="hero-content"
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
+            transition={{ duration: 1, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
           >
             <motion.div 
               className="hero-badge"
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.6, delay: 0.4 }}
+              transition={{ duration: 0.8, delay: 0.4, ease: [0.22, 1, 0.36, 1] }}
               data-testid="hero-badge"
             >
-              <span className="badge-dot"></span>
-              Intelligent Business Automation
+              <Sparkles size={16} className="badge-sparkle" />
+              <span>Intelligent Business Automation</span>
             </motion.div>
             
             <motion.h1 
               className="hero-title"
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.5 }}
+              transition={{ duration: 1, delay: 0.5, ease: [0.22, 1, 0.36, 1] }}
               data-testid="hero-title"
             >
-              Automate the Tasks
+              Automate the Work
               <br />
-              <span className="gradient-text">That Slow You Down</span>
+              <span className="gradient-text">That Drains Your Time</span>
             </motion.h1>
             
             <motion.p 
               className="hero-subtitle"
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.7 }}
+              transition={{ duration: 1, delay: 0.7, ease: [0.22, 1, 0.36, 1] }}
               data-testid="hero-subtitle"
             >
-              We build intelligent automation systems that handle your repetitive tasks,
-              so your team can focus on what truly matters. From email workflows to data processing,
-              we make automation effortless.
+              We build intelligent automation systems that eliminate repetitive tasks,
+              so your team can focus on what drives growth. From workflows to data processing,
+              we make automation seamless and powerful.
             </motion.p>
             
             <motion.div 
               className="hero-cta"
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.9 }}
+              transition={{ duration: 1, delay: 0.9, ease: [0.22, 1, 0.36, 1] }}
             >
-              <Link to="/contact" className="cta-primary" data-testid="cta-book-consultation">
-                Schedule a Demo
-                <ArrowRight size={20} strokeWidth={2.5} />
+              <Link to="/contact" className="cta-primary" data-testid="cta-contact-us">
+                <MessageCircle size={20} strokeWidth={2.5} />
+                Contact Us
               </Link>
               <button className="cta-secondary" data-testid="cta-see-how">
                 <PlayCircle size={20} />
@@ -211,95 +246,111 @@ const Home = () => {
             </motion.div>
 
             <motion.div 
-              className="hero-stats"
-              initial={{ opacity: 0, y: 20 }}
+              className="hero-stats-container"
+              initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 1.1 }}
+              transition={{ duration: 1, delay: 1.1, ease: [0.22, 1, 0.36, 1] }}
               data-testid="hero-stats"
             >
-              {benefits.map((benefit, index) => (
-                <motion.div 
-                  key={index}
-                  className="stat-item"
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ duration: 0.6, delay: 1.2 + (index * 0.1) }}
-                >
-                  <div className="stat-icon">{benefit.icon}</div>
-                  <div className="stat-number">{benefit.number}</div>
-                  <div className="stat-label">{benefit.label}</div>
-                </motion.div>
-              ))}
+              <div className="glass-card hero-stats">
+                {benefits.map((benefit, index) => (
+                  <motion.div 
+                    key={index}
+                    className="stat-item"
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ duration: 0.8, delay: 1.2 + (index * 0.1), ease: [0.22, 1, 0.36, 1] }}
+                  >
+                    <div className="stat-icon">{benefit.icon}</div>
+                    <div className="stat-number">{benefit.number}</div>
+                    <div className="stat-label">{benefit.label}</div>
+                  </motion.div>
+                ))}
+              </div>
             </motion.div>
           </motion.div>
 
           <motion.div 
             className="hero-visual"
-            initial={{ opacity: 0, x: 50 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 1, delay: 0.6 }}
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 1.2, delay: 0.6, ease: [0.22, 1, 0.36, 1] }}
           >
-            <div className="automation-flow">
-              <motion.div 
-                className="flow-node node-1"
-                animate={{ 
-                  y: [0, -10, 0],
-                }}
-                transition={{ 
-                  duration: 3,
-                  repeat: Infinity,
-                  ease: "easeInOut"
-                }}
-              >
-                <GitBranch size={20} />
-                <span>Trigger</span>
-              </motion.div>
-              
-              <motion.div 
-                className="flow-line line-1"
-                initial={{ scaleX: 0 }}
-                animate={{ scaleX: 1 }}
-                transition={{ duration: 1, delay: 1.2 }}
-              />
-              
-              <motion.div 
-                className="flow-node node-2"
-                animate={{ 
-                  y: [0, -8, 0],
-                }}
-                transition={{ 
-                  duration: 3,
-                  delay: 0.5,
-                  repeat: Infinity,
-                  ease: "easeInOut"
-                }}
-              >
-                <Settings size={20} />
-                <span>Process</span>
-              </motion.div>
-              
-              <motion.div 
-                className="flow-line line-2"
-                initial={{ scaleX: 0 }}
-                animate={{ scaleX: 1 }}
-                transition={{ duration: 1, delay: 1.4 }}
-              />
-              
-              <motion.div 
-                className="flow-node node-3"
-                animate={{ 
-                  y: [0, -12, 0],
-                }}
-                transition={{ 
-                  duration: 3,
-                  delay: 1,
-                  repeat: Infinity,
-                  ease: "easeInOut"
-                }}
-              >
-                <Check size={20} />
-                <span>Complete</span>
-              </motion.div>
+            <div className="glass-card automation-showcase">
+              <div className="showcase-header">
+                <div className="showcase-dots">
+                  <span className="dot"></span>
+                  <span className="dot"></span>
+                  <span className="dot"></span>
+                </div>
+                <div className="showcase-title">Workflow Engine</div>
+              </div>
+              <div className="automation-flow">
+                <motion.div 
+                  className="flow-node node-1"
+                  animate={{ 
+                    y: [0, -8, 0],
+                  }}
+                  transition={{ 
+                    duration: 3,
+                    repeat: Infinity,
+                    ease: "easeInOut"
+                  }}
+                >
+                  <GitBranch size={20} />
+                  <span>Trigger</span>
+                </motion.div>
+                
+                <motion.div 
+                  className="flow-connector"
+                  initial={{ scaleX: 0 }}
+                  animate={{ scaleX: 1 }}
+                  transition={{ duration: 1.2, delay: 1.5, ease: [0.22, 1, 0.36, 1] }}
+                >
+                  <div className="connector-pulse"></div>
+                </motion.div>
+                
+                <motion.div 
+                  className="flow-node node-2"
+                  animate={{ 
+                    y: [0, -10, 0],
+                  }}
+                  transition={{ 
+                    duration: 3,
+                    delay: 0.5,
+                    repeat: Infinity,
+                    ease: "easeInOut"
+                  }}
+                >
+                  <Cpu size={20} />
+                  <span>Process</span>
+                </motion.div>
+                
+                <motion.div 
+                  className="flow-connector"
+                  initial={{ scaleX: 0 }}
+                  animate={{ scaleX: 1 }}
+                  transition={{ duration: 1.2, delay: 1.7, ease: [0.22, 1, 0.36, 1] }}
+                >
+                  <div className="connector-pulse" style={{ animationDelay: '0.5s' }}></div>
+                </motion.div>
+                
+                <motion.div 
+                  className="flow-node node-3"
+                  animate={{ 
+                    y: [0, -12, 0],
+                  }}
+                  transition={{ 
+                    duration: 3,
+                    delay: 1,
+                    repeat: Infinity,
+                    ease: "easeInOut"
+                  }}
+                >
+                  <Check size={20} />
+                  <span>Complete</span>
+                </motion.div>
+              </div>
             </div>
           </motion.div>
         </div>
@@ -310,9 +361,9 @@ const Home = () => {
         <div className="section-container">
           <motion.div 
             className="section-header"
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0, y: 40 }}
             whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
+            transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
             viewport={{ once: true }}
           >
             <h2 className="section-title" data-testid="section-title">What We Do</h2>
@@ -322,18 +373,38 @@ const Home = () => {
             </p>
           </motion.div>
 
+          <motion.div 
+            className="typing-showcase-container"
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
+            viewport={{ once: true }}
+          >
+            <div className="glass-card typing-showcase">
+              <div className="typing-header">
+                <LayoutDashboard size={24} className="typing-icon" />
+                <span>Building</span>
+              </div>
+              <TypingAnimation 
+                text="automations that you need"
+                className="typing-text"
+              />
+            </div>
+          </motion.div>
+
           <div className="services-grid">
             {automationServices.map((service, index) => (
               <motion.div 
                 key={index}
-                className="service-card"
-                initial={{ opacity: 0, y: 40 }}
+                className="glass-card service-card"
+                initial={{ opacity: 0, y: 50 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: service.delay }}
+                transition={{ duration: 0.6, delay: service.delay, ease: [0.22, 1, 0.36, 1] }}
                 viewport={{ once: true }}
-                whileHover={{ y: -8, transition: { duration: 0.3 } }}
+                whileHover={{ y: -8, scale: 1.02, transition: { duration: 0.3, ease: [0.22, 1, 0.36, 1] } }}
                 data-testid={`service-card-${index}`}
               >
+                <div className="service-glow"></div>
                 <div className="service-icon">{service.icon}</div>
                 <h3 className="service-title">{service.title}</h3>
                 <p className="service-description">{service.description}</p>
@@ -351,9 +422,9 @@ const Home = () => {
         <div className="section-container">
           <motion.div 
             className="section-header"
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0, y: 40 }}
             whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
+            transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
             viewport={{ once: true }}
           >
             <h2 className="section-title" data-testid="for-you-title">What We Can Do For You</h2>
@@ -366,11 +437,12 @@ const Home = () => {
             {useCases.map((useCase, index) => (
               <motion.div 
                 key={index}
-                className="use-case-card"
-                initial={{ opacity: 0, x: -30 }}
+                className="glass-card use-case-card"
+                initial={{ opacity: 0, x: -40 }}
                 whileInView={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.6, delay: index * 0.15 }}
+                transition={{ duration: 0.6, delay: index * 0.15, ease: [0.22, 1, 0.36, 1] }}
                 viewport={{ once: true }}
+                whileHover={{ x: 4, transition: { duration: 0.3 } }}
                 data-testid={`use-case-${index}`}
               >
                 <div className="use-case-header">
@@ -390,11 +462,15 @@ const Home = () => {
 
       {/* CTA Section */}
       <section className="final-cta-section" data-testid="cta-section">
+        <div className="cta-background-effects">
+          <div className="cta-orb cta-orb-1"></div>
+          <div className="cta-orb cta-orb-2"></div>
+        </div>
         <motion.div 
-          className="cta-content"
+          className="glass-card cta-content"
           initial={{ opacity: 0, scale: 0.95 }}
           whileInView={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.8 }}
+          transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
           viewport={{ once: true }}
         >
           <h2 className="cta-title" data-testid="cta-title">
@@ -404,10 +480,10 @@ const Home = () => {
             Let's discuss how automation can transform your operations and free up your team's time
           </p>
           <Link to="/contact" className="cta-button" data-testid="cta-contact-button">
-            Book Your Free Consultation
-            <ArrowRight size={20} strokeWidth={2.5} />
+            <MessageCircle size={20} strokeWidth={2.5} />
+            Contact Us Now
           </Link>
-          <div className="cta-note">No commitment required • 30-minute consultation</div>
+          <div className="cta-note">No commitment required • Free consultation</div>
         </motion.div>
       </section>
     </div>
@@ -417,32 +493,37 @@ const Home = () => {
 const Contact = () => {
   return (
     <div className="contact-container" data-testid="contact-page">
+      <div className="contact-background-effects">
+        <div className="gradient-orb orb-1"></div>
+        <div className="gradient-orb orb-2"></div>
+      </div>
+
       <motion.div 
         className="contact-content"
-        initial={{ opacity: 0, y: 30 }}
+        initial={{ opacity: 0, y: 40 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8 }}
+        transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
       >
         <div className="contact-header">
           <h1 className="contact-title" data-testid="contact-title">
             Let's Automate Your Workflow
           </h1>
           <p className="contact-subtitle" data-testid="contact-subtitle">
-            Schedule a consultation to discover how Simr can eliminate repetitive tasks
+            Get in touch to discover how Simr can eliminate repetitive tasks
             and accelerate your business operations
           </p>
         </div>
 
         <div className="contact-grid">
           <motion.div 
-            className="contact-info"
-            initial={{ opacity: 0, x: -30 }}
+            className="glass-card contact-info"
+            initial={{ opacity: 0, x: -40 }}
             animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
+            transition={{ duration: 0.8, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
           >
-            <h3 className="info-title">Book Your Free Consultation</h3>
+            <h3 className="info-title">Get In Touch</h3>
             <p className="info-text">
-              In our 30-minute session, we'll:
+              We'll help you:
             </p>
             
             <div className="consultation-points">
@@ -456,7 +537,7 @@ const Contact = () => {
               </div>
               <div className="point-item">
                 <Check size={20} className="point-icon" />
-                <span>Provide a custom automation roadmap</span>
+                <span>Design custom automation solutions</span>
               </div>
             </div>
             
@@ -472,16 +553,16 @@ const Contact = () => {
           </motion.div>
 
           <motion.div 
-            className="calendar-wrapper"
-            initial={{ opacity: 0, x: 30 }}
+            className="glass-card calendar-wrapper"
+            initial={{ opacity: 0, x: 40 }}
             animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8, delay: 0.4 }}
+            transition={{ duration: 0.8, delay: 0.4, ease: [0.22, 1, 0.36, 1] }}
           >
             <div className="calendar-placeholder" data-testid="calendar-placeholder">
               <Calendar className="calendar-icon" size={48} />
               <h3 className="calendar-title">Interactive Calendar</h3>
-              <p className="calendar-text">Calendar booking system coming soon</p>
-              <p className="calendar-note">Contact us via email to schedule your consultation</p>
+              <p className="calendar-text">Booking system coming soon</p>
+              <p className="calendar-note">Contact us via email for immediate assistance</p>
             </div>
           </motion.div>
         </div>
