@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react';
-import { motion, useScroll, useTransform } from 'framer-motion';
+import { useState, useEffect, useRef } from 'react';
+import { motion, useScroll, useTransform, useInView } from 'framer-motion';
 import './App.css';
 import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
 import { 
@@ -20,7 +20,9 @@ import {
   Users,
   Settings,
   ChevronRight,
-  PlayCircle
+  PlayCircle,
+  Sparkles,
+  MessageCircle
 } from 'lucide-react';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
