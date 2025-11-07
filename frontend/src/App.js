@@ -60,12 +60,9 @@ const Navbar = () => {
           <Link to="/" className="nav-link" data-testid="nav-home-link" onClick={() => setIsMenuOpen(false)}>
             Home
           </Link>
-          <Link to="/contact" className="nav-link" data-testid="nav-contact-link" onClick={() => setIsMenuOpen(false)}>
-            Contact
-          </Link>
           <Link to="/contact" className="nav-cta" data-testid="nav-cta" onClick={() => setIsMenuOpen(false)}>
-            Book Demo
-            <ArrowRight size={16} />
+            Contact Us
+            <MessageCircle size={16} />
           </Link>
         </div>
 
