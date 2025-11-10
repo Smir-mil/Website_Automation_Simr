@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { motion, useScroll, useTransform, useInView } from 'framer-motion';
 import './App.css';
-import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Link, useLocation } from 'react-router-dom';
 import { 
   Workflow, 
   Zap, 
@@ -60,6 +60,7 @@ const TypingAnimation = ({ text, className }) => {
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const location = useLocation();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -86,7 +87,12 @@ const Navbar = () => {
         </Link>
         
         <div className={`nav-menu ${isMenuOpen ? 'active' : ''}`}>
-          <Link to="/" className="nav-link" data-testid="nav-home-link" onClick={() => setIsMenuOpen(false)}>
+          <Link 
+            to="/" 
+            className={`nav-link ${location.pathname === '/' ? 'active' : ''}`} 
+            data-testid="nav-home-link" 
+            onClick={() => setIsMenuOpen(false)}
+          >
             Home
           </Link>
           <Link to="/contact" className="nav-cta" data-testid="nav-cta" onClick={() => setIsMenuOpen(false)}>
