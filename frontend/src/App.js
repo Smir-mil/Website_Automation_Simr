@@ -200,6 +200,15 @@ const Home = () => {
       {/* Hero Section */}
       <section className="hero-section" data-testid="hero-section">
         <div className="hero-background-effects">
+          <iframe 
+            src='https://my.spline.design/animatedbackgroundgradientforweb-WtXVIT9ALxJKLCroPAzddmOf/' 
+            frameBorder='0' 
+            width='100%' 
+            height='100%'
+            className="spline-background"
+            title="Animated Background"
+          ></iframe>
+          <div className="liquid-glass-effect" data-us-project="ZXd9D6ZoiaFRXfE7c75E"></div>
           <div className="gradient-orb orb-1"></div>
           <div className="gradient-orb orb-2"></div>
           <div className="gradient-orb orb-3"></div>
@@ -592,6 +601,7 @@ const Contact = () => {
 function App() {
   return (
     <div className="App">
+      <div className="global-liquid-glass" data-us-project="ZXd9D6ZoiaFRXfE7c75E"></div>
       <BrowserRouter>
         <Navbar />
         <Routes>
